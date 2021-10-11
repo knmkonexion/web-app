@@ -1,0 +1,13 @@
+heartbeat.config.monitors:
+  path: /opt/heartbeat/monitors/*.yml
+  reload.enabled: true
+  reload.period: 1s
+
+processors:
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+
+output.elasticsearch:
+  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch.default.svc.cluster.local:9200}'
+  username: '${ELASTICSEARCH_USERNAME:}'
+  password: '${ELASTICSEARCH_PASSWORD:}'
