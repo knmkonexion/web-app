@@ -39,12 +39,12 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /app/management
+              port: 5601
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /app/management
+              port: 5601
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
