@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DB_HOST
-              value: "10.170.48.3"
+              value: {{ .Values.environment.dbHost }}
           ports:
             - name: http
               containerPort: 5000

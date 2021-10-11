@@ -101,6 +101,6 @@ module "mysql" {
   ]
 
   custom_labels = {
-    test-id = "mysql-private-ip-example"
+    test-id = "mysql-private-ip"
   }
 }

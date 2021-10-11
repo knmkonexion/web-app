@@ -9,6 +9,7 @@ If you are using a bucket for TF state, make sure it exists
 Network/Subnetwork not created beforehand causes a race condition when applying an env
  - consider using TF module to set up the networking layer in advance
  - re-provisioning your env results in success
+ - be mindful of GCP quotas and the number of networks TF creates, the networks aren't getting desrtroyed and your quotas are affected!
 Cluster provisioning takes ~5 minutes (be patient...)
 MySQL provisioning takes 15+ minutes....WOW!!! What is GCP doing, writing the entire structured query language from scratch???
 Destroying resrouces in an env takes a long time as well

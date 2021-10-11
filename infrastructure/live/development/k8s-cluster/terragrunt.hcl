@@ -18,9 +18,9 @@ inputs = {
   region       = local.env.region
   zones        = ["us-east1-b"]
 
-  machine_type = "e2-medium"
-  min_nodes    = 2
-  max_nodes    = 3
+  machine_type = "e2-standard-2"
+  min_nodes    = 3
+  max_nodes    = 5
 
   disk_size = 10
 
