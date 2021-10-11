@@ -1,5 +1,0 @@
-apiVersion: v2
-name: kibana
-description: Deploys Kibana
-type: application
-version: 0.1.0
