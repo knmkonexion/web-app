@@ -1,0 +1,5 @@
+apiVersion: v2
+name: misc-jobs
+description: Deploys jobs needed for additional configuration
+type: application
+version: 0.1.0

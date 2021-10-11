@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kibana-index-job
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback
+    "helm.sh/hook-delete-policy": before-hook-creation
+    "helm.sh/hook-weight": "3"
+spec:
+  template:
+    metadata:
+      name: "{{.Release.Name}}"
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: kibana-index-job
+          image: "gcr.io/cool-automata-328421/kibana-sidecar:0.1.0"
+          command: ["/bin/sh", "-c", './wait_for_service.sh http://kibana.default.svc.cluster.local:5601; ./create_index_pattern.sh']
+          env:
+          - name: INDEX_PATTERN
+            value: heartbeat*
+          - name: KIBANA_HOST
+            value: kibana.default.svc.cluster.local:5601
