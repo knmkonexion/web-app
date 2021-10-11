@@ -44,12 +44,12 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /_cluster/health
+              port: 9200
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /_cluster/health
+              port: 9200
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
