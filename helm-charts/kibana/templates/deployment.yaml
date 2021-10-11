@@ -1,76 +1,156 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "kibana.fullname" . }}
-  labels:
-    {{- include "kibana.labels" . | nindent 4 }}
+  name: {{ template "kibana.fullname" . }}
+  labels: {{ include "kibana.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: {{ .Values.replicas }}
+  strategy:
+{{ toYaml .Values.updateStrategy | indent 4 }}
   selector:
     matchLabels:
-      {{- include "kibana.selectorLabels" . | nindent 6 }}
+      app: {{ .Chart.Name }}
+      release: {{ .Release.Name | quote }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "kibana.selectorLabels" . | nindent 8 }}
+        app: {{ .Chart.Name }}
+        release: {{ .Release.Name | quote }}
+        {{- range $key, $value := .Values.labels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      annotations:
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{/* This forces a restart if the configmap has changed */}}
+        {{- if .Values.kibanaConfig }}
+        configchecksum: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum | trunc 63 }}
+        {{- end }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "kibana.serviceAccountName" . }}
+{{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+{{- end }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: "CLUSTER_NAME"
-              value: "esclusterzero"
-            - name: ELASTICSEARCH_URL
-              value: http://elasticsearch.default.svc.cluster.local:9200
-            - name: XPACK_MONITORING_ENABLED
-              value: "false"
-            - name: XPACK_SECURITY_ENABLED
-              value: "false"
-            - name: XPACK_REPORTING_ENABLED
-              value: "false"
-            - name: XPACK_ML_ENABLED
-              value: "false"   
-            - name: XPACK_GRAPH_ENABLED
-              value: "false"
-          ports:
-            - name: http
-              containerPort: 5601
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /app/management
-              port: 5601
-          readinessProbe:
-            httpGet:
-              path: /app/management
-              port: 5601
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+{{ toYaml .Values.podSecurityContext | indent 8 }}
+      {{- if .Values.serviceAccount }}
+      serviceAccount: {{ .Values.serviceAccount }}
+      {{- end }}
+      volumes:
+        {{- range .Values.secretMounts }}
+        - name: {{ .name }}
+          secret:
+            secretName: {{ .secretName }}
+        {{- end }}
+        {{- if .Values.kibanaConfig }}
+        - name: kibanaconfig
+          configMap:
+            name: {{ template "kibana.fullname" . }}-config
+        {{- end }}
+    {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+    {{- end }}
+      {{- if .Values.extraInitContainers }}
+      # Currently some extra blocks accept strings
+      # to continue with backwards compatibility this is being kept
+      # whilst also allowing for yaml to be specified too.
+      initContainers:
+      {{- if eq "string" (printf "%T" .Values.extraInitContainers) }}
+{{ tpl .Values.extraInitContainers . | indent 6 }}
+      {{- else }}
+{{ toYaml .Values.extraInitContainers | indent 6 }}
+      {{- end }}
+      {{- end }}
+      containers:
+      - name: kibana
+        securityContext:
+{{ toYaml .Values.securityContext | indent 10 }}
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+        env:
+          {{- if .Values.elasticsearchURL }}
+          - name: ELASTICSEARCH_URL
+            value: "{{ .Values.elasticsearchURL }}"
+          {{- else if .Values.elasticsearchHosts }}
+          - name: ELASTICSEARCH_HOSTS
+            value: "{{ .Values.elasticsearchHosts }}"
+          {{- end }}
+          - name: SERVER_HOST
+            value: "{{ .Values.serverHost }}"
+{{- if .Values.extraEnvs }}
+{{ toYaml .Values.extraEnvs | indent 10 }}
+{{- end }}
+{{- if .Values.envFrom }}
+        envFrom:
+{{ toYaml .Values.envFrom | indent 10 }}
+{{- end }}
+        readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 10 }}
+          exec:
+            command:
+              - sh
+              - -c
+              - |
+                #!/usr/bin/env bash -e
+                http () {
+                    local path="${1}"
+                    set -- -XGET -s --fail -L
+
+                    if [ -n "${ELASTICSEARCH_USERNAME}" ] && [ -n "${ELASTICSEARCH_PASSWORD}" ]; then
+                      set -- "$@" -u "${ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD}"
+                    fi
+
+                    STATUS=$(curl --output /dev/null --write-out "%{http_code}" -k "$@" "{{ .Values.protocol }}://localhost:{{ .Values.httpPort }}${path}")
+                    if [[ "${STATUS}" -eq 200 ]]; then
+                      exit 0
+                    fi
+
+                    echo "Error: Got HTTP code ${STATUS} but expected a 200"
+                    exit 1
+                }
+
+                http "{{ .Values.healthCheckPath }}"
+        ports:
+        - containerPort: {{ .Values.httpPort }}
+{{- if .Values.lifecycle }}
+        lifecycle:
+{{ toYaml .Values.lifecycle | indent 10 }}
+{{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        volumeMounts:
+          {{- range .Values.secretMounts }}
+          - name: {{ .name }}
+            mountPath: {{ .path }}
+            {{- if .subPath }}
+            subPath: {{ .subPath }}
+            {{- end }}
+          {{- end }}
+          {{- range $path, $config := .Values.kibanaConfig }}
+          - name: kibanaconfig
+            mountPath: /usr/share/kibana/config/{{ $path }}
+            subPath: {{ $path }}
+          {{- end -}}
+      {{- if .Values.extraContainers }}
+      # Currently some extra blocks accept strings
+      # to continue with backwards compatibility this is being kept
+      # whilst also allowing for yaml to be specified too.
+      {{- if eq "string" (printf "%T" .Values.extraContainers) }}
+{{ tpl .Values.extraContainers . | indent 6 }}
+      {{- else }}
+{{ toYaml .Values.extraContainers | indent 6 }}
+      {{- end }}
       {{- end }}

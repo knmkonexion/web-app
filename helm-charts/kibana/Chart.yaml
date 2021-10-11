@@ -1,5 +1,12 @@
-apiVersion: v2
+apiVersion: v1
+description: Official Elastic helm chart for Kibana
+home: https://github.com/elastic/helm-charts
+maintainers:
+- email: helm-charts@elastic.co
+  name: Elastic
 name: kibana
-description: Deploys Kibana
-type: application
-version: 0.1.0
+version: 7.9.0
+appVersion: 7.9.0
+sources:
+  - https://github.com/elastic/kibana
+icon: https://helm.elastic.co/icons/kibana.png
