@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>Hello World</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <!-- header area -->
+    <header>
+        <div class="wrapper">
+            <div class="floaties"><a href="{{ url_for('blog') }}" target="_blank">Blog</a></div>
+            <div class="floaties"><a href="{{ url_for('health_check') }}" target="_blank">Healthcheck</a></div>
+            <div class="floaties"><a href="http://localhost:5601/app/uptime#/#/" target="_blank">Availability</a></div>
+            <div class="floaties"><a href="http://localhost:3000/d/18eec5001/ecosystem-monitoring?orgId=1" target="_blank">Alerts</a></div>
+            <div class="floaties"><a href="">Architecture</a></div>
+        </div>
+    </header>
+
+    <!-- main body area -->
+    <div class="wrapper">
+    
+    <!-- main content area, this is where other templates' contents will reside -->
+    <main class="content">
+ 
+        {% block content %}{% endblock %}
+
+    </main> <!-- end main content area -->
+    </div>  <!-- end wrapper -->  
+</body>
+</html>

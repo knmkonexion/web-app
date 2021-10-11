@@ -21,7 +21,7 @@ set -e
 # Global vars
 gcr_registry='gcr.io'
 project_id='cool-automata-328421'
-version_tag='0.1.0' # use bumpversion in production, this is just for development,
+version_tag='0.1.1' # use bumpversion in production, this is just for development,
 
 usage() {
   [ "$*" ] && echo "$0: $*"
@@ -31,7 +31,7 @@ usage() {
 
 provision() {
   echo "Building and pushing ${1}"
-  cd ../standalone/"${1}" && docker build -t "${gcr_registry}/${project_id}/${1}:${version_tag}" .
+  cd ../src/"${1}" && docker build -t "${gcr_registry}/${project_id}/${1}:${version_tag}" .
   docker push "${gcr_registry}/${project_id}/${1}:${version_tag}"
 }
 

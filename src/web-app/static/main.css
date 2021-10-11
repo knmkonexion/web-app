@@ -1,0 +1,102 @@
+html { 
+  background: url(images/earth.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body {
+  margin: 0px 0px 0px 0px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  background-color: rgba(255,255,255,0.5);
+  box-shadow: 0px 15px 10px -15px #111;
+  width: 100%;
+  padding: 10px;
+  font-size: 30px;
+  color: antiquewhite;
+  float: left;
+}
+
+.wrapper {
+  width: 100%;
+   overflow: hidden; /* add this to contain floated children */
+}
+
+.floaties {
+  float: left;
+}
+
+.welcome {
+  color: black;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.floaties a {
+  background-color: rgba(255,255,255,0.5);
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 25px;
+  padding: 5px;
+  color: black;
+}
+
+.floaties a:hover {
+  background-color: rgba(255,255,255,0.65);
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 25px;
+  padding: 5px;
+  color: #565758;
+  border-bottom: solid 1px #565758;
+}
+
+.my-world {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: rgba(255,255,255,0.375);
+  color: #202c2d;
+  text-shadow:
+    0 1px #808d93,
+    -1px 0 #cdd2d5,
+    -1px 2px #808d93,
+    -2px 1px #cdd2d5,
+    -2px 3px #808d93,
+    -3px 2px #cdd2d5,
+    -3px 4px #808d93,
+    -4px 3px #cdd2d5,
+    -4px 5px #808d93,
+    -5px 4px #cdd2d5,
+    -5px 6px #808d93,
+    -6px 5px #cdd2d5,
+    -6px 7px #808d93,
+    -7px 6px #cdd2d5,
+    -7px 8px #808d93,
+    -8px 7px #cdd2d5;
+}
+
+.blog {
+  padding: 20px;
+  margin-left: 10px;
+  width: 350px;
+  background-color: #cdd2d5!important;
+  color: #111!important;
+  border: solid 1px #111;
+  font-weight: bold;
+}
+
+.blog::after {
+  content: "\aLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac turpis egestas sed tempus urna et. Magna ac placerat vestibulum lectus mauris ultrices. Amet consectetur adipiscing elit pellentesque habitant.";
+  display: block;
+  font-weight: normal;
+}
