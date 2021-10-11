@@ -38,3 +38,23 @@ install_ingress_controller() {
   kubectl get service ingress-nginx-controller --namespace=ingress-nginx
 }
 
+main() {
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    (-h|--help) usage 2>&1;;
+    (setup_kubeconfig) setup_kubeconfig;;
+    (install_ingress_controller) install_ingress_controller;;
+    (*) "Invalid argument";;
+  esac
+  exit 0;
+done
+}
+
+if [ "$#" -eq 0 ]; then 
+  usage && exit 1
+elif [[ $(basename "$PWD") == 'scripts' ]]; then
+  main "$@"
+else
+  echo '[WARNING] - you must be in the scripts directory for this script to work'
+  usage
+fi
