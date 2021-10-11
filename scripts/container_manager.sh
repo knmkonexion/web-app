@@ -21,7 +21,7 @@ set -e
 # Global vars
 gcr_registry='gcr.io'
 project_id='cool-automata-328421'
-version_tag='0.1.4' # use bumpversion in production, this is just for development,
+version_tag='0.1.5' # use bumpversion in production, this is just for development,
 
 usage() {
   [ "$*" ] && echo "$0: $*"
@@ -39,7 +39,7 @@ main() {
 while [ "$#" -gt 0 ]; do
   case "$1" in
     (-h|--help) usage 2>&1;;
-    (provision) provision "$2";;
+    (provision) provision "$2" "$3";;
     (*) "Invalid argument";;
   esac
   exit 0;
