@@ -49,12 +49,9 @@ ingress:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
   hosts:
-    - host: "34.74.156.224"
-      paths: [/]
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+    - host: "34.74.156.224.nip.io"
+      paths:
+        - path: /
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
