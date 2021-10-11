@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: gcr.io/cool-automata-328421/grafana
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "0.1.0"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -41,14 +41,14 @@ service:
   port: 3000
 
 ingress:
-  enabled: false
+  enabled: true
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
   hosts:
     - host: "34.74.156.224.nip.io"
       paths:
-        - path: /grafana(/|$)(.*)
+        - path: "/grafana(/|$)(.*)"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
