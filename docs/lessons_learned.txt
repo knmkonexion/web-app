@@ -1,0 +1,49 @@
+-----------------------
+Terraform/Terragrunt
+-----------------------
+Newer versions have removed provider version constraints (gotcha)
+If you are using a bucket for TF state, make sure it exists
+ - planning results in no console output and hangs forever with no feedback
+ - cd'ing into the target env directory then performing an init revealed the issue
+ - init was prompting for (y|n) to create the missing bucket, TG had no way of passing that to the console (bug?)
+Network/Subnetwork not created beforehand causes a race condition when applying an env
+ - consider using TF module to set up the networking layer in advance
+ - re-provisioning your env results in success
+Cluster provisioning takes ~5 minutes (be patient...)
+MySQL provisioning takes 15+ minutes....WOW!!! What is GCP doing, writing the entire structured query language from scratch???
+Destroying resrouces in an env takes a long time as well
+ - GCP does not seem as fast as other cloud providers, their resources take a lot longer to provision (maybe because free tier?)
+A lot of APIs need to be enabled before you can interact with resources... just takes a lot of getting used to the nuances!
+GCP SQL would be nice to know this beforehand...
+ - When you delete an instance, you cannot reuse the name of the deleted instance until one week from the deletion date
+
+-----------------------
+Kubernetes resources
+-----------------------
+Getting kubeconfig is overly complex for no good reason, why do I need their gcloud command to get kubeconfig? C'mon Google!
+Cluster takes a long time to be in ready state when provisioning from IaC
+
+
+
+
+------
+Why?
+------
+Kubernetes cluster on GCP GKE
+ - provides great scalability
+ - application front-end can be scaled based on demand 
+
+MySQL on GCP SQL
+ - better to host databases outside the cluster
+ - better scalability
+ - read replicas can be used for increased security (use for web front-end type data that does not need write access)
+
+Scaling a public-facing application with Kubernetes on GKE
+ - node pool: scale nodes as needed
+ - scale replicas
+ - Implement DaemonSets
+
+Monitoring on Kubernetes
+ - ServiceMonitors
+ - Prometheus is your friend
+ - Grafan dashboards and alerts (Slack)
