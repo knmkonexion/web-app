@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Define any needed dependencies/classes
 class DBManager:
-    def __init__(self, database='blog', host="10.170.48.3", user="root", password_file="password.txt"):
+    def __init__(self, database='blog', host=os.getenv('DB_HOST'), user="root", password_file="password.txt"):
         pf = open(password_file, 'r')
         self.connection = mysql.connector.connect(
             user=user, 
