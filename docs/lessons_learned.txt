@@ -22,7 +22,7 @@ Kubernetes resources
 -----------------------
 Getting kubeconfig is overly complex for no good reason, why do I need their gcloud command to get kubeconfig? C'mon Google!
 Cluster takes a long time to be in ready state when provisioning from IaC
-
+Helm ingress is incorrect on GCP, need to make sure these are using the correct annotations
 
 
 
