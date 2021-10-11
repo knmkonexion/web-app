@@ -3,4 +3,4 @@
   id: mysql-blog
   enabled: true
   schedule: '@every 5s'
-  hosts: ["tcp://mysql:3306"]
+  hosts: ["tcp://10.20.208.3:3306"]
