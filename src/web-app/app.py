@@ -11,10 +11,11 @@ metrics.info('app_info', 'Application info', version='0.1.0')
 
 # Create a connection to the database
 mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = os.environ.get('DB_USER')
-app.config['MYSQL_DATABASE_PASSWORD'] = os.environ.get('MYSQL_DATABASE_PASSWORD')
-app.config['MYSQL_DATABASE_DB'] = os.environ.get('DB_NAME')
-app.config['MYSQL_DATABASE_HOST'] = os.environ.get('DB_HOST') #'34.73.152.50'
+app.config['MYSQL_DATABASE_HOST'] = os.getenv('DB_HOST')
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_DB'] = 'blog'
+app.config['MYSQL_DATABASE_SOCKET'] = None
+app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('MYSQL_DATABASE_PASSWORD')
 
 mysql.init_app(app)
 conn = mysql.connect()

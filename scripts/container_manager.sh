@@ -16,6 +16,7 @@ set -e
 ## Arguments:
 ##   -h, --help              Displays the help message.
 ##   provision <image_dir>   Builds, tags, and pushes the container image to the GCR private registry
+##   provision_web_app       Only build the web app because there's secrets involves
 ##
 
 # Global vars
@@ -35,11 +36,18 @@ provision() {
   docker push "${gcr_registry}/${project_id}/${1}:${version_tag}"
 }
 
+provision_web_app() {
+  echo "Building and pushing web-app"
+  cd ../src/web-app && docker build -t "${gcr_registry}/${project_id}/web-app:${version_tag}" --build-arg DB_PASSWORD=$(cat password.txt) .
+  docker push "${gcr_registry}/${project_id}/web-app:${version_tag}"
+}
+
 main() {
 while [ "$#" -gt 0 ]; do
   case "$1" in
     (-h|--help) usage 2>&1;;
     (provision) provision "$2" "$3";;
+    (provision_web_app) provision_web_app;;
     (*) "Invalid argument";;
   esac
   exit 0;

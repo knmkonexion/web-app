@@ -16,8 +16,6 @@ fullnameOverride: ""
 
 environment:
   dbHost: "10.20.208.3"
-  dbName: "blog"
-  dbUser: "root"
 
 serviceAccount:
   # Specifies whether a service account should be created

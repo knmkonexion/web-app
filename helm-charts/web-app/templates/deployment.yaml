@@ -34,10 +34,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: DB_USER
-              value: {{ .Values.environment.dbUser }}
-            - name: DB_NAME
-              value: {{ .Values.environment.dbName }}
             - name: DB_HOST
               value: {{ .Values.environment.dbHost }}
           ports:
