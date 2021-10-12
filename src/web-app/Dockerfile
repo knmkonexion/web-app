@@ -14,7 +14,8 @@ RUN pip install --upgrade pip \
     && mkdir -p /var/log/flask-app \
     && touch /var/log/flask-app/flask-app.err.log \
     && touch /var/log/flask-app/flask-app.out.log \
-    && chown -R "${user}":"${user}" /var/log/flask-app
+    && chown -R "${user}":"${user}" /var/log/flask-app \
+    && export MYSQL_DATABASE_PASSWORD=$(cat password.txt)
 
 USER "${user}"
 
