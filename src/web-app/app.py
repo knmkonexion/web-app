@@ -1,8 +1,13 @@
 import os
 from flask import Flask, request, jsonify, render_template
+from prometheus_flask_exporter import PrometheusMetrics
 import mysql.connector
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+
+# static information as metric
+metrics.info('app_info', 'Application info', version='0.1.0')
 
 # Define any needed dependencies/classes
 class DBManager:
@@ -11,7 +16,7 @@ class DBManager:
         self.connection = mysql.connector.connect(
             user=user, 
             password=pf.read(),
-            host=host, # name of the mysql service as set in the docker-compose file
+            host=host,
             database=database,
             auth_plugin='mysql_native_password'
         )
