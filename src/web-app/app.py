@@ -4,7 +4,7 @@ from prometheus_flask_exporter import PrometheusMetrics
 from flaskext.mysql import MySQL
 
 app = Flask(__name__)
-metrics = PrometheusMetrics(app, version='0.1.10', path='/metrics')
+metrics = PrometheusMetrics(app, version='0.1.11', path='/metrics')
 
 # Create a connection to the database
 mysql = MySQL()
