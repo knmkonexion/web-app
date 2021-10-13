@@ -22,7 +22,7 @@ set -e
 # Global vars
 gcr_registry='gcr.io'
 project_id='cool-automata-328421'
-version_tag='0.1.9' # use bumpversion in production, this is just for development,
+version_tag='0.1.10' # use bumpversion in production, this is just for development,
 
 usage() {
   [ "$*" ] && echo "$0: $*"
