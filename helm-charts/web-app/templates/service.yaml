@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: {{ include "web-app.fullname" . }}
   labels:
-    {{- include "web-app.labels" . | nindent 4 }}
+    k8s-apps: http-metrics
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: http-metrics
       protocol: TCP
-      name: http
+      name: http-metrics
   selector:
     {{- include "web-app.selectorLabels" . | nindent 4 }}

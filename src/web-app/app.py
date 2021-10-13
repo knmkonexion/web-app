@@ -35,5 +35,6 @@ def blog():
 def health_check():
 		return "success"
 
+# For use in development - use a WSGI for production
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', debug=True)

@@ -15,3 +15,12 @@ datasources:
     logMessageField: ""
     maxConcurrentShardRequests: 5
     timeField: "@timestamp"
+
+- name: Prometheus
+  type: prometheus
+  orgId: 1
+  url: http://prometheus-stack-kube-prom-prometheus.default:9090/
+  isDefault: false
+  editable: true
+  access: direct
+  

@@ -15,17 +15,20 @@
 | Web App | Python Flask, multiple routes, health-check, pulls website content from MySQl |
 | MySQL DB | provisioned via Terragrunt/Terraform (IaC), hosts website content, includes sample data (blog posts) |
 | Kubernetes cluster | provisioned via Terragrunt/Terraform (IaC), hosts the web app and monitoring stack |
-| Containerized everything | web-app, supporting monitoring/metrics apps. pushed to private registry for better security |
+| Containerized everything | web-app, supporting monitoring/metrics apps, pushed to private registry (GCR) for better security |
+| Container Registry (GCR) | only available inside my GCP project (security boundary), images are scanned for vulnerabilities |
 | Elasticsearch, Kibana, Grafana, Hearbeat | core monitoring stack, provisioned via Helm, propvides availability, monitoring, and alerting |
-| Prometheus stack | provides metrics for cluster (nodes, pods, apps, services), provisioned via Helm |
+| Prometheus stack | provides metrics for cluster (nodes, pods, apps, services), provisioned via Helm (vendor Helm chart) |
+<!-- | ArgoCD | stretch |
+| Falco Security | stretch | -->
 
 <!-- insert architecture diagram here -->
 
-## Monitoring, Metrics, and Alerting
+## M2A2 _(Monitoring, Metrics, Availability, and Alerting)_
 
 ---
 
-#### Infrastrucutre and Application Monitoring
+#### Infrastrucutre and Application Monitoring and Availability
 
 * Service Availability - are services up and running as expected? are there any errors (crit,err,warn)?
 * Network Availability - can services communicate both vertically and horizontally?
