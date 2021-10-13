@@ -2,7 +2,7 @@
 
 ---
 
-> Purpose is to deploy a web application that stores/retrieves information from a database, is scalable and publicly available. Two of the core tenets of this application is to deploy the necessary Infrastructure as Code and a scalable application. What better to do this than Terraform/Terragrunt/Kubernetes...a fabulous combination.
+Purpose is to deploy a web application that stores/retrieves information from a database, is scalable and publicly available. Two of the core tenets of this application is to deploy the necessary Infrastructure as Code and a scalable application. What better to do this than Terraform/Terragrunt/Kubernetes...a fabulous combination.
 
 #### Repository Structure and Contents
 
