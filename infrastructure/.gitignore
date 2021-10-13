@@ -4,6 +4,7 @@ credentials.json
 # Local .terraform directories
 **/.terraform/*
 **/.terragrunt-cache/*
+**/.terraform.lock.hcl
 
 # .tfstate files
 *.tfstate
