@@ -4,10 +4,7 @@ from prometheus_flask_exporter import PrometheusMetrics
 from flaskext.mysql import MySQL
 
 app = Flask(__name__)
-metrics = PrometheusMetrics(app)
-
-# static information as metric
-metrics.info('app_info', 'Application info', version='0.1.0')
+metrics = PrometheusMetrics(app, version='0.1.10', path='/metrics')
 
 # Create a connection to the database
 mysql = MySQL()
@@ -24,21 +21,19 @@ cursor = conn.cursor()
 # Generate routes
 @app.route('/')
 def home():
-	cursor.execute('SELECT greeting from website')
-	greeting = cursor.fetchone()
-	return render_template('home.html', greeting=greeting)
+		cursor.execute('SELECT greeting from website')
+		greeting = cursor.fetchone()
+		return render_template('home.html', greeting=greeting)
 
 @app.route('/blog')
 def blog():
-	cursor.execute('SELECT title from blog')
-	blog_posts = cursor.fetchall()
-	return render_template('blog.html', blog_posts=blog_posts)
-
+		cursor.execute('SELECT title from blog')
+		blog_posts = cursor.fetchall()
+		return render_template('blog.html', blog_posts=blog_posts)
 
 @app.route('/health-check')
 def health_check():
-	return "success"
+		return "success"
 
-# Testing prior to refactor
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', debug=True)

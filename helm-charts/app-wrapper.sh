@@ -15,7 +15,7 @@ set -e
 ## Arguments:
 ##   -h, --help                Displays the help message.
 ##   chaos <deployment_name>   Scales down a deployment to demonstrate a little bit of chaos (for monitoring and alerting demonstration) 
-##   calm <deployment_name>    Scales a deployment up to return to a nice, eveen-headed, calm state
+##   calm <deployment_name>    Scales a deployment up to return to a nice, calm state
 ##
 
 usage() {
