@@ -17,22 +17,20 @@
 | Kubernetes cluster | provisioned via Terragrunt/Terraform (IaC), hosts the web app and monitoring stack |
 | Containerized everything | web-app, supporting monitoring/metrics apps, pushed to private registry (GCR) for better security |
 | Container Registry (GCR) | only available inside my GCP project (security boundary), images are scanned for vulnerabilities |
-| Elasticsearch, Kibana, Grafana, Hearbeat | core monitoring stack, provisioned via Helm, propvides availability, monitoring, and alerting |
+| Elasticsearch, Kibana, Grafana, Heartbeat | core monitoring stack, provisioned via Helm, provides availability, monitoring, and alerting |
 | Prometheus stack | provides metrics for cluster (nodes, pods, apps, services), provisioned via Helm (vendor Helm chart) |
-<!-- | ArgoCD | stretch |
-| Falco Security | stretch | -->
 
-<!-- insert architecture diagram here -->
+![Web App Architecture Diagram](docs/web-app-architecture.png)
 
 ## M2A2 _(Monitoring, Metrics, Availability, and Alerting)_
 
 ---
 
-#### Infrastrucutre and Application Monitoring and Availability
+#### Infrastructure and Application Monitoring and Availability
 
 * Service Availability - are services up and running as expected? are there any errors (crit,err,warn)?
 * Network Availability - can services communicate both vertically and horizontally?
-* Security Monitoring - are service components comliant, scanned, vetted?
+* Security Monitoring - are service components compliant, scanned, vetted?
 
 #### Application Metrics
 
@@ -42,7 +40,7 @@
 
 #### Alerting
 
-* Service outage - why did the service outage occur? how long was the service outage? root cause? tracabilitry?
+* Service outage - why did the service outage occur? how long was the service outage? root cause? traceability?
 * Immediate versus regular notifications - critical prod service down (why isn't it HA?)? need to know ASAP!
 
 ## Local Development

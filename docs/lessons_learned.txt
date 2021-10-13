@@ -28,7 +28,7 @@ Helm ingress is incorrect on GCP, need to make sure these are using the correct 
 
 
 ------
-Why?
+ Why?
 ------
 Kubernetes cluster on GCP GKE
  - provides great scalability
