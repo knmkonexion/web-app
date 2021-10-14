@@ -8,15 +8,10 @@ steps:
   # Run unit tests against app
   - name: python
     entrypoint: 'bash'
-    args: ['-c', 'MYSQL_DATABASE_PASSWORD=$$WEB_APP_DB_PASSWORD DB_HOST=$$DB_HOST python -m pytest']
+    args: ['-c', 'export MYSQL_DATABASE_PASSWORD=$$WEB_APP_DB_PASSWORD && export DB_HOST=$$DB_HOST && python -m pytest']
     secretEnv: ['WEB_APP_DB_PASSWORD']
     env:
       - 'DB_HOST=10.20.208.3'
-
-availableSecrets:
-  secretManager:
-  - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
-    env: 'WEB_APP_DB_PASSWORD'      
 
 
 ### [BUILD CONTAINER] ###
@@ -68,10 +63,10 @@ steps:
     args: ['push', '-image', 'gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
 
 
-# availableSecrets:
-#   secretManager:
-#   - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
-#     env: 'WEB_APP_DB_PASSWORD'
+availableSecrets:
+  secretManager:
+  - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
+    env: 'WEB_APP_DB_PASSWORD'
 
 substitutions:
     _APP_VERSION: 0.1.12
