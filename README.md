@@ -30,7 +30,7 @@ Purpose is to deploy a web application that stores/retrieves information from a 
 | Elasticsearch, Kibana, Grafana, Heartbeat | core monitoring stack, provisioned via Helm, provides availability, monitoring, and alerting |
 | Prometheus stack | provides metrics for cluster (nodes, pods, apps, services), provisioned via Helm (vendor Helm chart) |
 
-![Web App Architecture Diagram](docs/web-app-architecture_v2.png)
+![Web App Architecture Diagram](docs/web-app-architecture_v3.png)
 
 ## M2A2 _(Monitoring, Metrics, Availability, and Alerting)_
 
