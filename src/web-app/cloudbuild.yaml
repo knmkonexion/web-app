@@ -21,37 +21,37 @@ steps:
     args: ['build', '-t', 'gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}', '.']
 
 ### [SCAN CONTAINER] ###
-   - name: gcr.io/cloud-builders/docker
-     id: inspect-container
-     entrypoint: /bin/bash
-     args:
-     - -c
-     - |
-       docker image inspect gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} --format \
-         '{{index .RepoTags 0}}@{{.Id}}' > /workspace/image-digest.txt
-       cat image-digest.txt
+  - name: gcr.io/cloud-builders/docker
+    id: inspect-container
+    entrypoint: /bin/bash
+    args:
+    - -c
+    - |
+      docker image inspect gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} --format \
+        '{{index .RepoTags 0}}@{{.Id}}' > /workspace/image-digest.txt
+      cat image-digest.txt
    
-   - name: gcr.io/cloud-builders/gcloud
-     id: vulnerability-scan-container
-     entrypoint: /bin/bash
-     args:
-     - -c
-     - |
-       gcloud artifacts docker images scan gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} \
-       --format='value(response.scan)' > /workspace/scan_id.txt
+  - name: gcr.io/cloud-builders/gcloud
+    id: vulnerability-scan-container
+    entrypoint: /bin/bash
+    args:
+    - -c
+    - |
+      gcloud artifacts docker images scan gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} \
+      --format='value(response.scan)' > /workspace/scan_id.txt
 
-   - name: gcr.io/cloud-builders/gcloud
-     id: vulnerability-severity-check
-     entrypoint: /bin/bash
-     args:
-     - -c
-     - | # Check the vulnerabilities and exit if it meets severity level
-       gcloud artifacts docker images list-vulnerabilities \
-        $(cat /workspace/scan_id.txt) --format='value(vulnerability.effectiveSeverity)' \
-        | if grep -Fxq $_SEVERITY 
-          then echo 'Failed vulnerability check'
-          exit 1 
-          fi
+  - name: gcr.io/cloud-builders/gcloud
+    id: vulnerability-severity-check
+    entrypoint: /bin/bash
+    args:
+    - -c
+    - | # Check the vulnerabilities and exit if it meets severity level
+      gcloud artifacts docker images list-vulnerabilities \
+       $(cat /workspace/scan_id.txt) --format='value(vulnerability.effectiveSeverity)' \
+       | if grep -Fxq $_SEVERITY 
+         then echo 'Failed vulnerability check'
+         exit 1 
+         fi
 
 ### [PUBLISH APP] ###
 images: ['gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
