@@ -21,7 +21,7 @@ steps:
     args: ['-c', 'MYSQL_DATABASE_PASSWORD=$$WEB_APP_DB_PASSWORD DB_HOST=$$DB_HOST python -m pytest']
     secretEnv: ['WEB_APP_DB_PASSWORD']
     env:
-      - 'DB_HOST=10.20.208.3'
+      - 'DB_HOST=34.73.152.50'
 
 ### [BUILD CONTAINER] ###
   - name: 'gcr.io/cloud-builders/docker'
