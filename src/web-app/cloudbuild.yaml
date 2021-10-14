@@ -11,10 +11,7 @@ steps:
     args: ["-m", "pytest", "--junitxml=${SHORT_SHA}_test_log.xml"]
     env:
       - 'DB_HOST=10.20.208.3'
-    availableSecrets:   secretManager:
-      - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
-        env: 'MYSQL_DATABASE_PASSWORD'
-
+      - 'MYSQL_DATABASE_PASSWORD=MYSQL_DATABASE_PASSWORD'
 
 ### [BUILD CONTAINER] ###
 steps:
@@ -63,6 +60,11 @@ steps:
   # Publish container image/application to GCR
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', '-image', 'gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
+    env: 'MYSQL_DATABASE_PASSWORD'
 
 substitutions:
     _APP_VERSION: 0.1.12
