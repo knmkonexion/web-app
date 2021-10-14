@@ -28,7 +28,7 @@ steps:
 ### [SCAN CONTAINER] ###
   - name: 'gcr.io/$PROJECT_ID/trivy'
     id: vulnerability-scan-image
-    args: ['--exit-code 1 CRITICAL --no-progress gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
+    args: ['gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
