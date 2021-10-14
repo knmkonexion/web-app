@@ -2,6 +2,11 @@ steps:
 ### [BUILD APP] ###
   # Install dependencies
   - name: python
+    id: list-working-directory
+    entrypoint: 'bash'
+    args: ['-c', 'pwd && ls -alh']
+
+  - name: python
     id: install-dependencies
     entrypoint: pip
     args: ["install", "-r", "requirements.txt", "--user"]
