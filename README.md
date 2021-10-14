@@ -87,11 +87,11 @@ _Note: this project has been deployed to Google Cloud Platform thanks to their g
 
 - [x] Version app in pipeline (verbump ideal, manual ok for initial)
 - [x] Register domain name
-- [] Obtain/apply SSL certificate
-- [] Put web app behind WAF -- Cloud Armor?
-- [] CI pipeline to build the app (lint, unit test, sast, version, publish)
-- [] CI pipeline to build the container (lint, validate, scan, version, publish)
-- [] CD to continually deploy the app (argo?)
+- [ ] Obtain/apply SSL certificate
+- [ ] Put web app behind WAF -- Cloud Armor?
+- [ ] CI pipeline to build the app (lint, unit test, sast, version, publish)
+- [ ] CI pipeline to build the container (lint, validate, scan, version, publish)
+- [ ] CD to continually deploy the app (argo?)
 
 #### Deployment Strategy
 
