@@ -58,7 +58,7 @@ images: ['gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
 
 availableSecrets:
   secretManager:
-  - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
+  - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD/versions/1
     env: 'WEB_APP_DB_PASSWORD'
 
 substitutions:
