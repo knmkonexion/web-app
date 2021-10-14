@@ -23,7 +23,7 @@ steps:
     id: generate-build-version
     entrypoint: /bin/bash
     dir: 'src/web-app'
-    args: ["-c", "echo ${_MAJOR}.${_MINOR}.$(git rev-list --count ${BRANCH_NAME}) > APP_VERSION && cat APP_VERSION"]
+    args: ["-c", "echo ${_MAJOR}.${_MINOR}.$(git rev-list --count HEAD) > APP_VERSION && cat APP_VERSION"]
 
 ### [BUILD CONTAINER] ###
   - name: 'gcr.io/cloud-builders/docker'
