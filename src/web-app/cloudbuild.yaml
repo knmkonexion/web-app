@@ -18,10 +18,7 @@ steps:
     id: unit-test-application
     entrypoint: 'bash'
     dir: 'src/web-app'
-    args: ['-c', 'MYSQL_DATABASE_PASSWORD=$$WEB_APP_DB_PASSWORD DB_HOST=$$DB_HOST python -m pytest']
-    secretEnv: ['WEB_APP_DB_PASSWORD']
-    env:
-      - 'DB_HOST=10.20.208.3'
+    args: ['-c', 'python -m pytest']
 
 ### [BUILD CONTAINER] ###
   - name: 'gcr.io/cloud-builders/docker'
@@ -67,11 +64,6 @@ steps:
 
 ### [PUBLISH APP] ###
 images: ['gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
-
-availableSecrets:
-  secretManager:
-  - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD/versions/1
-    env: 'WEB_APP_DB_PASSWORD'
 
 substitutions:
     _APP_VERSION: 0.1.12
