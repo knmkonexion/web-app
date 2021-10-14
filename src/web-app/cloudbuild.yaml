@@ -9,9 +9,10 @@ steps:
   - name: python
     entrypoint: python
     args: ["-m", "pytest", "--junitxml=${SHORT_SHA}_test_log.xml"]
+    secretEnv: ['MYSQL_DATABASE_PASSWORD']
     env:
       - 'DB_HOST=10.20.208.3'
-      - 'MYSQL_DATABASE_PASSWORD=MYSQL_DATABASE_PASSWORD'
+
 
 ### [BUILD CONTAINER] ###
 steps:
