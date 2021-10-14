@@ -8,8 +8,8 @@ steps:
   # Run unit tests against app
   - name: python
     entrypoint: python
-    args: ["-m", "MYSQL_DATABASE_PASSWORD=$$WEB_APP_DB_PASSWORD DB_HOST=$$DB_HOST pytest", "--junitxml=${SHORT_SHA}_test_log.xml"]
-    secretEnv: ['WEB_APP_DB_PASSWORD']
+    args: ["-m", "MYSQL_DATABASE_PASSWORD=$$DB_PASSWORD DB_HOST=$$DB_HOST pytest", "--junitxml=${SHORT_SHA}_test_log.xml"]
+    secretEnv: ['DB_PASSWORD']
     env:
       - 'DB_HOST=10.20.208.3'
 
@@ -65,7 +65,7 @@ steps:
 availableSecrets:
   secretManager:
   - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
-    env: 'WEB_APP_DB_PASSWORD'
+    env: 'DB_PASSWORD'
 
 substitutions:
     _APP_VERSION: 0.1.12
