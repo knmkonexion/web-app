@@ -1,5 +1,5 @@
-### [BUILD APP] ###
 steps:
+### [BUILD APP] ###
   # Install dependencies
   - name: python
     entrypoint: pip
@@ -8,20 +8,16 @@ steps:
   # Run unit tests against app
   - name: python
     entrypoint: 'bash'
-    args: ['-c', 'DB_HOST=$$DB_HOST python -m pytest']
+    args: ['-c', 'MYSQL_DATABASE_PASSWORD=$$WEB_APP_DB_PASSWORD DB_HOST=$$DB_HOST python -m pytest']
+    secretEnv: ['WEB_APP_DB_PASSWORD']
     env:
       - 'DB_HOST=10.20.208.3'
 
-
 ### [BUILD CONTAINER] ###
-steps:
-  # Build container image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}', '.']
 
-
 ### [SCAN CONTAINER] ###
-steps:
    - id: inspect
      name: gcr.io/cloud-builders/docker
      entrypoint: /bin/bash
@@ -54,15 +50,13 @@ steps:
           exit 1 
           fi
 
-
 ### [PUBLISH APP] ###
 images: ['gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
 
-
-# availableSecrets:
-#   secretManager:
-#   - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
-#     env: 'WEB_APP_DB_PASSWORD'
+availableSecrets:
+  secretManager:
+  - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD
+    env: 'WEB_APP_DB_PASSWORD'
 
 substitutions:
     _APP_VERSION: 0.1.12
