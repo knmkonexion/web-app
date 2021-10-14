@@ -7,8 +7,8 @@ steps:
 
   # Run unit tests against app
   - name: python
-    entrypoint: python
-    args: ["-m", "MYSQL_DATABASE_PASSWORD=$$DB_PASSWORD DB_HOST=$$DB_HOST pytest", "--junitxml=${SHORT_SHA}_test_log.xml"]
+    entrypoint: 'bash'
+    args: ['-m', 'MYSQL_DATABASE_PASSWORD=$$DB_PASSWORD DB_HOST=$$DB_HOST pytest', --junitxml=${SHORT_SHA}_test_log.xml]
     secretEnv: ['DB_PASSWORD']
     env:
       - 'DB_HOST=10.20.208.3'
