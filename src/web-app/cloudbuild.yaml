@@ -56,10 +56,7 @@ steps:
 
 
 ### [PUBLISH APP] ###
-steps:
-  # Publish container image/application to GCR
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '-image', 'gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
+images: [gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}]
 
 
 # availableSecrets:
