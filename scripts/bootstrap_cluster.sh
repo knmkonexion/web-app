@@ -4,6 +4,7 @@
 
 create_namespaces() {
   kubectl create ns monitoring
+  kubectl create ns delivery
 }
 
 install_prometheus() {
@@ -32,6 +33,11 @@ install_grafana() {
   helm install grafana -n monitoring ../helm-charts/grafana/
 }
 
+install_argocd() {
+  helm repo add argo https://argoproj.github.io/argo-helm
+  helm install argocd -n delivery argo/argo-cd
+}
+
 main() {
   create_namespaces
   install_prometheus && sleep 30
@@ -40,6 +46,7 @@ main() {
   install_heartbeat
   install_kibana
   install_grafana
+  install_argocd
 }
 
 main
