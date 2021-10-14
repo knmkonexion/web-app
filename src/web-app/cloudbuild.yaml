@@ -1,20 +1,20 @@
 steps:
 ### [BUILD APP] ###
   # Install dependencies
-  - name: python
+  - name: python:3.9.2
     id: list-working-directory
     entrypoint: 'bash'
     dir: 'src/web-app'
     args: ['-c', 'pwd && ls -alh']
 
-  - name: python
+  - name: python:3.9.2
     id: install-dependencies
     entrypoint: pip
     dir: 'src/web-app'
     args: ["install", "-r", "requirements.txt", "--user"]
 
   # Run unit tests against app
-  - name: python
+  - name: python:3.9.2
     id: unit-test-application
     entrypoint: 'bash'
     dir: 'src/web-app'
