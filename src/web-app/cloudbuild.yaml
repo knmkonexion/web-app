@@ -39,8 +39,9 @@ steps:
 ### [SCAN CONTAINER] ###
   - name: 'aquasec/trivy'
     id: vulnerability-scan-image
+    entrypoint: /bin/sh
     dir: 'src/web-app'
-    args: ['--format', 'json', '--output', 'scan_report.json', 'gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)']
+    args: ['-c', 'trivy --exit-code 1 CRITICAL --no-progress gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)']
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
