@@ -37,7 +37,7 @@ steps:
     args: ['-c', 'docker images']
 
 ### [SCAN CONTAINER] ###
-  - name: 'gcr.io/$PROJECT_ID/trivy'
+  - name: 'aquasec/trivy'
     id: vulnerability-scan-image
     dir: 'src/web-app'
     args: ['--format', 'json', '--output', 'scan_report.json', 'gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)']
