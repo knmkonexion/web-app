@@ -1,54 +1,49 @@
 steps:
 ### [BUILD APP] ###
   # Install dependencies
-  - name: python:3.9.2
-    id: list-working-directory
-    entrypoint: 'bash'
-    dir: 'src/web-app'
-    args: ['-c', 'pwd && ls -alh']
-
-  - name: python:3.9.2
+  - name: 'python:3.9.2'
     id: install-dependencies
     entrypoint: pip
     dir: 'src/web-app'
     args: ["install", "-r", "requirements.txt", "--user"]
 
   # Run unit tests against app
-  - name: python:3.9.2
+  - name: 'python:3.9.2'
     id: unit-test-application
     entrypoint: 'bash'
     dir: 'src/web-app'
     args: ['-c', 'python -m pytest']
 
+### [VERSION THE BUILD] ###
+  - name: 'gcr.io/cloud-builders/git'
+    id: fetch-git-info
+    args: ["fetch", "--unshallow"]
+
+  - name: 'gcr.io/cloud-builders/git'
+    id: version-build
+    entrypoint: /bin/bash
+    dir: 'src/web-app'
+    args: ["-c", "echo ${_MAJOR}.${_MINOR}.$(git rev-list --count ${BRANCH_NAME}) > APP_VERSION"
+
 ### [BUILD CONTAINER] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: build-app-container-image
     dir: 'src/web-app'
-    args: ['build', '-t', 'gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}', '.']
+    args: ['build', '-t', 'gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)', '.']
+]
 
 ### [SCAN CONTAINER] ###
-  - name: gcr.io/cloud-builders/docker
-    id: inspect-container
-    entrypoint: /bin/bash
-    dir: 'src/web-app'
-    args:
-    - -c
-    - |
-      docker image inspect gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} --format \
-        '{{index .RepoTags 0}}@{{.Id}}' > /workspace/image-digest.txt
-      cat image-digest.txt
-   
-  - name: gcr.io/cloud-builders/gcloud
+  - name: 'gcr.io/cloud-builders/gcloud'
     id: vulnerability-scan-container
     entrypoint: /bin/bash
     dir: 'src/web-app'
     args:
     - -c
     - |
-      gcloud artifacts docker images scan gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} \
+      gcloud artifacts docker images scan gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION) \
       --format='value(response.scan)' > /workspace/scan_id.txt
 
-  - name: gcr.io/cloud-builders/gcloud
+  - name: 'gcr.io/cloud-builders/gcloud'
     id: vulnerability-severity-check
     entrypoint: /bin/bash
     dir: 'src/web-app'
@@ -63,7 +58,9 @@ steps:
          fi
 
 ### [PUBLISH APP] ###
-images: ['gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ["push", "gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)"]
 
 substitutions:
-    _APP_VERSION: 0.1.12
+  _MAJOR: 0
+  _MINOR: 1
