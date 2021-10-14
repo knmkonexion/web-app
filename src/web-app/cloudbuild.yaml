@@ -20,16 +20,16 @@ steps:
     args: ["fetch", "--unshallow"]
 
   - name: 'gcr.io/cloud-builders/git'
-    id: version-build
+    id: generate-build-version
     entrypoint: /bin/bash
     dir: 'src/web-app'
-    args: ["-c", "echo ${_MAJOR}.${_MINOR}.$(git rev-list --count ${BRANCH_NAME}) > APP_VERSION"]
+    args: ["-c", "echo ${_MAJOR}.${_MINOR}.$(git rev-list --count ${BRANCH_NAME}) > APP_VERSION && cat APP_VERSION"]
 
 ### [BUILD CONTAINER] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: build-app-container-image
     dir: 'src/web-app'
-    args: ['build', '-t', 'gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)', '.']
+    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION) .']
 
 ### [SCAN CONTAINER] ###
   - name: 'gcr.io/cloud-builders/gcloud'
