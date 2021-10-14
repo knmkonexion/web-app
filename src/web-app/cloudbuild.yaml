@@ -30,30 +30,17 @@ steps:
     dir: 'src/web-app'
     args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION) .']
 
-### [SCAN CONTAINER] ###
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: vulnerability-scan-container
+  - name: 'gcr.io/cloud-builders/docker'
+    id: list-container-images
     entrypoint: /bin/bash
     dir: 'src/web-app'
-    args:
-    - -c
-    - |
-      gcloud artifacts docker images scan gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION) \
-      --format='value(response.scan)' > /workspace/scan_id.txt
+    args: ['-c', 'docker images']
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: vulnerability-severity-check
-    entrypoint: /bin/bash
+### [SCAN CONTAINER] ###
+  - name: 'gcr.io/$PROJECT_ID/trivy'
+    id: vulnerability-scan-image
     dir: 'src/web-app'
-    args:
-    - -c
-    - |
-      gcloud artifacts docker images list-vulnerabilities \
-       $(cat /workspace/scan_id.txt) --format='value(vulnerability.effectiveSeverity)' \
-       | if grep -Fxq $_SEVERITY 
-         then echo 'Failed vulnerability check'
-         exit 1 
-         fi
+    args: ['--format', 'json', '--output', 'scan_report.json', 'gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)']
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
