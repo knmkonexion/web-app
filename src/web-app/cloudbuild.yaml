@@ -12,23 +12,12 @@ steps:
     dir: 'src/web-app'
     args: ['-c', 'python -m pytest']
 
-### [VERSION THE BUILD] ###
-  - name: 'gcr.io/cloud-builders/git'
-    id: fetch-git-info
-    args: ["fetch", "--unshallow"]
-
-  - name: 'gcr.io/cloud-builders/git'
-    id: generate-build-version
-    entrypoint: /bin/bash
-    dir: 'src/web-app'
-    args: ["-c", "echo ${_MAJOR}.${_MINOR}.$(git rev-list --count HEAD) > APP_VERSION && cat APP_VERSION"]
-
 ### [BUILD CONTAINER] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: build-app-container-image
     entrypoint: /bin/bash
     dir: 'src/web-app'
-    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION) .']
+    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} .']
 
   - name: 'gcr.io/cloud-builders/docker'
     id: list-container-images
@@ -37,19 +26,16 @@ steps:
     args: ['-c', 'docker images']
 
 ### [SCAN CONTAINER] ###
-  - name: 'aquasec/trivy'
+  - name: 'gcr.io/$PROJECT_ID/trivy'
     id: vulnerability-scan-image
-    entrypoint: /bin/sh
-    dir: 'src/web-app'
-    args: ['-c', 'trivy --exit-code 1 CRITICAL --no-progress gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)']
+    args: ['--exit-code 1 CRITICAL', '--no-progress ', 'gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: publish-app-container
     entrypoint: /bin/bash
     dir: 'src/web-app'
-    args: ["-c", "docker push gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)"]
+    args: ["-c", "docker push gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}"]
 
 substitutions:
-  _MAJOR: "0"
-  _MINOR: "1"
+  _APP_VERSION: "0.1.12"
