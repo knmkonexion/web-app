@@ -80,3 +80,23 @@ _Note: this project has been deployed to Google Cloud Platform thanks to their g
 * Web app container will need to be built using some additional flavor (see local development above)
 * Assumptions: you have access to a cloud platform (GCP in this case)
 * You have general understanding of: IaC, application development, Kubernetes, Helm, containers...probably even an addiction to good coffee.
+
+## Future Enhancements
+
+---
+
+- [x] Version app in pipeline (verbump ideal, manual ok for initial)
+- [x] Register domain name
+- [] Obtain/apply SSL certificate
+- [] Put web app behind WAF -- Cloud Armor?
+- [] CI pipeline to build the app (lint, unit test, sast, version, publish)
+- [] CI pipeline to build the container (lint, validate, scan, version, publish)
+- [] CD to continually deploy the app (argo?)
+
+#### Deployment Strategy
+
+* Security and compliance - no apps get published to prod with vulnerabilities! Put gates in place.
+* Infrastructure - deploy based on estimated workload (infra/live), scale up and out as needed with Terragrunt configs
+* Canary deployments - cheaper, faster, more features get added without major pushes
+* Blue-Green (dev, stage, pre-prod, prod) - useful with major changes to an app, wholesale upgrades
+* Separate Kubernetes clusters - development, test, production
