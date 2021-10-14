@@ -17,7 +17,8 @@ steps:
     id: build-app-container-image
     entrypoint: /bin/bash
     dir: 'src/web-app'
-    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} .']
+    args: ['-c', 'docker build -t --build-arg DB_PASSWORD=${WEB_APP_DB_PASSWORD} gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} .']
+    secretEnv: ['WEB_APP_DB_PASSWORD']
 
   - name: 'gcr.io/cloud-builders/docker'
     id: list-container-images
@@ -38,4 +39,9 @@ steps:
     args: ["-c", "docker push gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}"]
 
 substitutions:
-  _APP_VERSION: "0.1.12"
+  _APP_VERSION: "0.1.13"
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD/versions/1
+    env: 'WEB_APP_DB_PASSWORD'

@@ -29,6 +29,7 @@ Purpose is to deploy a web application that stores/retrieves information from a 
 | Container Registry (GCR) | only available inside my GCP project (security boundary), images are scanned for vulnerabilities |
 | Elasticsearch, Kibana, Grafana, Heartbeat | core monitoring stack, provisioned via Helm, provides availability, monitoring, and alerting |
 | Prometheus stack | provides metrics for cluster (nodes, pods, apps, services), provisioned via Helm (vendor Helm chart) |
+| ArgoCD | Continuous Deployment for designated apps, monitors Git for updates and applies them to Kubernetes resources, Helm charts in this case |
 
 ![Web App Architecture Diagram](docs/web-app-architecture_v3.png)
 
@@ -67,8 +68,8 @@ Purpose is to deploy a web application that stores/retrieves information from a 
 
 * Build the image locally `` docker -t web-app:test --build-arg DB_PASSWORD=$(cat password.txt) .``
 * You will need the password.txt file (git ignores this file, because secrets...)
-* Or use the container_manager.sh script (caution: it only works for my GCP project, it is there for an example)
-* Run the app from container `` docker run -p 5000:5000 -e DB_HOST='34.73.152.50' web-app:test ``
+* Or use the container_manager.sh script (caution: it only works for my GCP project, it is there for an example, you can build the image and try that though)
+* Run the app from container `` docker run -p 5000:5000 -e DB_HOST='34.73.152.50' -e DB_PASSWORD="$(cat password.txt)" gcr.io/cool-automata-328421/web-app:0.1.12 ``
 
 ## Deploying on the Cloud
 
@@ -86,12 +87,11 @@ _Note: this project has been deployed to Google Cloud Platform thanks to their g
 ---
 
 - [x] Version app in pipeline (verbump ideal, manual ok for initial)
-- [x] Register domain name
+- [x] Obtain a domain name
 - [ ] Obtain/apply SSL certificate
 - [ ] Put web app behind WAF -- Cloud Armor?
-- [ ] CI pipeline to build the app (lint, unit test, sast, version, publish)
-- [ ] CI pipeline to build the container (lint, validate, scan, version, publish)
-- [ ] CD to continually deploy the app (argo?)
+- [x] CI pipeline to test/build/publish the app and container (unit test app, vulnerability scan)
+- [x] CD to continually deploy the app
 
 #### Deployment Strategy
 
