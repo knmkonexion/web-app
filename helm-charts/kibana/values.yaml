@@ -115,7 +115,7 @@ ingress:
     kubernetes.io/tls-acme: "true"
   path: kibana
   hosts:
-    - "34.74.156.224.nip.io"
+    - ""
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
