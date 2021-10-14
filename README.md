@@ -100,3 +100,4 @@ _Note: this project has been deployed to Google Cloud Platform thanks to their g
 * Canary deployments - cheaper, faster, more features get added without major pushes
 * Blue-Green (dev, stage, pre-prod, prod) - useful with major changes to an app, wholesale upgrades
 * Separate Kubernetes clusters - development, test, production
+* Separate repos - applications, infrastructure (these get built via CI/CD not in same repo...otherwise commits will kick off unneeded app builds)
