@@ -61,5 +61,5 @@ steps:
     args: ["push", "gcr.io/${PROJECT_ID}/web-app:$(cat APP_VERSION)"]
 
 substitutions:
-  _MAJOR: 0
-  _MINOR: 1
+  _MAJOR: "0"
+  _MINOR: "1"
