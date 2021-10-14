@@ -17,7 +17,7 @@ steps:
     id: build-app-container-image
     entrypoint: /bin/bash
     dir: 'src/web-app'
-    args: ['-c', 'docker build -t --build-arg DB_PASSWORD=$${WEB_APP_DB_PASSWORD} gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} .']
+    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} --build-arg DB_PASSWORD=$${WEB_APP_DB_PASSWORD} .']
     secretEnv: ['WEB_APP_DB_PASSWORD']
 
   - name: 'gcr.io/cloud-builders/docker'
