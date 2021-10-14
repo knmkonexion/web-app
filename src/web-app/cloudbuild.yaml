@@ -4,17 +4,20 @@ steps:
   - name: python
     id: list-working-directory
     entrypoint: 'bash'
+    dir: 'src/web-app'
     args: ['-c', 'pwd && ls -alh']
 
   - name: python
     id: install-dependencies
     entrypoint: pip
+    dir: 'src/web-app'
     args: ["install", "-r", "requirements.txt", "--user"]
 
   # Run unit tests against app
   - name: python
     id: unit-test-application
     entrypoint: 'bash'
+    dir: 'src/web-app'
     args: ['-c', 'MYSQL_DATABASE_PASSWORD=$$WEB_APP_DB_PASSWORD DB_HOST=$$DB_HOST python -m pytest']
     secretEnv: ['WEB_APP_DB_PASSWORD']
     env:
@@ -23,12 +26,14 @@ steps:
 ### [BUILD CONTAINER] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: build-app-container-image
+    dir: 'src/web-app'
     args: ['build', '-t', 'gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}', '.']
 
 ### [SCAN CONTAINER] ###
   - name: gcr.io/cloud-builders/docker
     id: inspect-container
     entrypoint: /bin/bash
+    dir: 'src/web-app'
     args:
     - -c
     - |
@@ -39,6 +44,7 @@ steps:
   - name: gcr.io/cloud-builders/gcloud
     id: vulnerability-scan-container
     entrypoint: /bin/bash
+    dir: 'src/web-app'
     args:
     - -c
     - |
@@ -48,6 +54,7 @@ steps:
   - name: gcr.io/cloud-builders/gcloud
     id: vulnerability-severity-check
     entrypoint: /bin/bash
+    dir: 'src/web-app'
     args:
     - -c
     - | # Check the vulnerabilities and exit if it meets severity level
