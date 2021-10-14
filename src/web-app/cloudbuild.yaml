@@ -8,7 +8,7 @@ steps:
   # Run unit tests against app
   - name: python
     entrypoint: 'bash'
-    args: ['-c', 'export MYSQL_DATABASE_PASSWORD=$$WEB_APP_DB_PASSWORD && export DB_HOST=$$DB_HOST && python -m pytest']
+    args: ['-c', 'DB_HOST=$$DB_HOST python -m pytest']
     secretEnv: ['WEB_APP_DB_PASSWORD']
     env:
       - 'DB_HOST=10.20.208.3'
