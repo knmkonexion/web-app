@@ -78,7 +78,7 @@ serviceAccount: ""
 # https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
 priorityClassName: ""
 
-httpPort: 80
+httpPort: 5601
 
 extraContainers: ""
 # - name: dummy-init
@@ -96,7 +96,7 @@ updateStrategy:
 service:
   type: LoadBalancer
   loadBalancerIP: ""
-  port: 5601
+  port: 80
   nodePort: ""
   labels: {}
   annotations: {}
