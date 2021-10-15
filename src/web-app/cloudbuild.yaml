@@ -6,11 +6,11 @@ steps:
     dir: 'src/web-app'
     args: ["install", "-r", "requirements.txt", "--user"]
 
-  - name: 'python:3.9.2'
+  - name: 'gcr.io/$PROJECT_ID/pylint:2.11.1'
     id: lint-code
-    entrypoint: 'python'
+    entrypoint: 'pylint'
     dir: 'src/web-app'
-    args: ['python3', '-m', 'pylint', 'app.py', 'main_test.py', 'wsgi.py']
+    args: ['app.py', 'main_test.py', 'wsgi.py']
 
   - name: 'python:3.9.2'
     id: unit-test-application
