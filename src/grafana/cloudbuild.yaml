@@ -4,7 +4,8 @@ steps:
     id: build-app-container-image
     entrypoint: /bin/bash
     dir: 'src/grafana'
-    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/grafana:${_APP_VERSION} .']
+    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/grafana:${_APP_VERSION} --build-arg SLACK_KEY=$${SLACK_ALERT_CHANNEL} .']
+    secretEnv: ['SLACK_ALERT_CHANNEL']
 
   - name: 'gcr.io/cloud-builders/docker'
     id: list-container-images
@@ -26,3 +27,8 @@ steps:
 
 substitutions:
   _APP_VERSION: "0.1.13"
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/791112449288/secrets/SLACK_ALERT_CHANNEL/versions/1
+    env: 'SLACK_ALERT_CHANNEL'

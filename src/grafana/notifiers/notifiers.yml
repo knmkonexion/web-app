@@ -1,0 +1,12 @@
+notifiers:
+  - name: notifier-slack
+    type: slack
+    uid: notifier-slack
+    org_id: 1
+    is_default: true
+    send_reminder: true
+    frequency: 1m
+    disable_resolve_message: false
+    settings:
+      uploadImage: true
+      url: https://hooks.slack.com/services/${SLACK_KEY}
