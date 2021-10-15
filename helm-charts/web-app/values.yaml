@@ -49,11 +49,10 @@ service:
 ingress:
   enabled: true
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: web-app
-  hosts:
-    - host: ""
-      paths:
-        - path: /
+    kubernetes.io/ingress.global-static-ip-name: "34.102.193.96"
+  defaultBackend:
+    serviceName: http
+    portNumber: 80
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
