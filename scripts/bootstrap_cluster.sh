@@ -13,39 +13,36 @@ install_prometheus() {
   cd ../helm-charts/prometheus/ && helm install prometheus-stack -n monitoring -f override-values.yaml prometheus-community/kube-prometheus-stack
 }
 
-install_webapp() {
-  helm install web-app ../helm-charts/web-app/
-}
-
-install_elasticsearch() {
-  helm install elasticsearch -n monitoring ../helm-charts/elasticsearch/
-}
-
-install_heartbeat() {
-  helm install heartbeat -n monitoring ../helm-charts/heartbeat/
-}
-
-install_kibana() {
-  helm install kibana -n monitoring ../helm-charts/kibana/
-}
-
-install_grafana() {
-  helm install grafana -n monitoring ../helm-charts/grafana/
-}
-
 install_argocd() {
   helm repo add argo https://argoproj.github.io/argo-helm
   helm install argocd -n delivery argo/argo-cd
 }
 
+### ArgoCD will manage these charts as part of Continuous Deployment
+##
+# install_webapp() {
+#   helm install web-app ../helm-charts/web-app/
+# }
+
+# install_elasticsearch() {
+#   helm install elasticsearch -n monitoring ../helm-charts/elasticsearch/
+# }
+
+# install_heartbeat() {
+#   helm install heartbeat -n monitoring ../helm-charts/heartbeat/
+# }
+
+# install_kibana() {
+#   helm install kibana -n monitoring ../helm-charts/kibana/
+# }
+
+# install_grafana() {
+#   helm install grafana -n monitoring ../helm-charts/grafana/
+# }
+
 main() {
   create_namespaces
   install_prometheus && sleep 30
-  install_webapp && sleep 30
-  install_elasticsearch && sleep 30
-  install_heartbeat
-  install_kibana
-  install_grafana
   install_argocd
 }
 
