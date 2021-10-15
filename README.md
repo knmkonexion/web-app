@@ -86,12 +86,16 @@ _Note: this project has been deployed to Google Cloud Platform thanks to their g
 
 ---
 
-- [x] Version app in pipeline (verbump ideal, manual ok for initial)
+#### To Do (hopefully can get all of this done)
+
+- [x] CI pipeline to test/build/publish the app and container (unit test app, vulnerability scan)
+- [x] Version app in pipeline
+- [x] CD to continually deploy the app
 - [x] Obtain a domain name
 - [ ] Obtain/apply SSL certificate
 - [ ] Put web app behind WAF -- Cloud Armor?
-- [x] CI pipeline to test/build/publish the app and container (unit test app, vulnerability scan)
-- [x] CD to continually deploy the app
+- [ ] Add DNS configuration to Terraform (static IP/route/zone creation); it is part of IaC
+
 
 #### Deployment Strategy
 

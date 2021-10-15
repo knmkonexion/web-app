@@ -43,7 +43,6 @@ securityContext: {}
 service:
   type: NodePort
   httpPort: 80
-  httpsPort: 443
   targetPort: http
 
 ingress:
