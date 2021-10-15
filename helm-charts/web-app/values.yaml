@@ -15,7 +15,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 environment:
-  dbHost: "10.20.208.3"
+  dbHost: "10.218.0.3"
 
 serviceAccount:
   # Specifies whether a service account should be created

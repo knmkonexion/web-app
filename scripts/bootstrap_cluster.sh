@@ -2,6 +2,11 @@
 
 # Used for bootstrapping the cluster after it has been provisioned
 
+setup_kubeconfig() {
+  # Note - this is only for GKE
+  gcloud container clusters get-credentials starr-org-development --zone us-east1-b --project cool-automata-328421
+}
+
 create_namespaces() {
   kubectl create ns monitoring
   kubectl create ns delivery
@@ -19,6 +24,7 @@ install_argocd() {
 }
 
 ### ArgoCD will manage these charts as part of Continuous Deployment
+### Otherwise, uncomment and run these functions to manually deploy.
 ##
 # install_webapp() {
 #   helm install web-app ../helm-charts/web-app/
@@ -41,6 +47,7 @@ install_argocd() {
 # }
 
 main() {
+  setup_kubeconfig
   create_namespaces
   install_prometheus && sleep 30
   install_argocd
