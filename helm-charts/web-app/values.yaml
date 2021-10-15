@@ -42,7 +42,7 @@ securityContext: {}
 
 service:
   type: LoadBalancer
-  loadBalancerIP: "34.69.204.33"
+  loadBalancerIP: "34.102.193.96"
   httpPort: 80
   httpsPort: 443
   targetPort: http
