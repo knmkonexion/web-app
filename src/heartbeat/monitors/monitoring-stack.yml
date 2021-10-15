@@ -1,5 +1,5 @@
 - type: http
-  name: Elasticsearch (Dev)
+  name: Elasticsearch (Data Storage)
   id: elasticsearch
   enabled: true
   schedule: '@every 5s'
@@ -16,11 +16,11 @@
     status: 200
 
 - type: http
-  name: Kibana (Dev)
+  name: Kibana (Dashboards, Monitoring)
   id: kibana
   enabled: true
   schedule: '@every 5s'
-  urls: ["http://kibana-kibana.default.svc.cluster.local:5601/app/kibana"]
+  urls: ["http://kibana.default.svc.cluster.local:5601/app/kibana"]
   ipv4: true
   ipv6: true
   mode: any
@@ -31,7 +31,7 @@
     status: 200
 
 - type: http
-  name: Grafana (Dev)
+  name: Grafana (Dashboards, Monitoring, Alerts)
   id: grafana
   enabled: true
   schedule: '@every 5s'
