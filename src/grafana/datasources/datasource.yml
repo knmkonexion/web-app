@@ -5,7 +5,7 @@ datasources:
   type: elasticsearch
   access: proxy
   orgId: 1
-  url: http://elasticsearch.default.svc.cluster.local:9200
+  url: http://elasticsearch.monitoring.svc.cluster.local:9200
   isDefault: false
   editable: true
   database: heartbeat*
