@@ -41,7 +41,8 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: LoadBalancer
+  loadBalancerIP: "34.149.172.117:443"
   httpPort: 80
   httpsPort: 443
   targetPort: http
