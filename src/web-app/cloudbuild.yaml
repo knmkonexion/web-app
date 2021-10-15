@@ -45,7 +45,7 @@ steps:
     args: ["-c", "docker push gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}"]
 
 substitutions:
-  _APP_VERSION: "0.1.15"
+  _APP_VERSION: "0.1.16"
 
 availableSecrets:
   secretManager:
