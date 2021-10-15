@@ -94,7 +94,7 @@ updateStrategy:
   type: "Recreate"
 
 service:
-  type: LoadBalancer
+  type: NodePort
   loadBalancerIP: ""
   port: 80
   nodePort: ""

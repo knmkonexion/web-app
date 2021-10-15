@@ -640,7 +640,7 @@ server:
   service:
     annotations: {}
     labels: {}
-    type: LoadBalancer
+    type: NodePort
     ## For node port default ports
     nodePortHttp: 30080
     nodePortHttps: 30443
