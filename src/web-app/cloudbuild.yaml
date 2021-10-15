@@ -10,7 +10,7 @@ steps:
     id: lint-code
     entrypoint: 'pylint'
     dir: 'src/web-app'
-    args: ['app.py', 'main_test.py', 'wsgi.py']
+    args: ['app.py', 'wsgi.py']
 
   - name: 'python:3.9.2'
     id: unit-test-application
