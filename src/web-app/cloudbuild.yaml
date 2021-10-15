@@ -8,9 +8,9 @@ steps:
 
   - name: 'python:3.9.2'
     id: lint-code
-    entrypoint: 'bash'
+    entrypoint: 'python'
     dir: 'src/web-app'
-    args: ['-c', 'find . -type f -name "*.py" | xargs pylint']
+    args: ['python3', '-m', 'pylint', 'app.py', 'main_test.py', 'wsgi.py']
 
   - name: 'python:3.9.2'
     id: unit-test-application
