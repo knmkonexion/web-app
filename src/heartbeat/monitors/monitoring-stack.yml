@@ -18,7 +18,7 @@
   id: kibana
   enabled: true
   schedule: '@every 5s'
-  urls: ["http://kibana.monitoring.svc.cluster.local:5601/app/kibana"]
+  urls: ["http://kibana.monitoring.svc.cluster.local:80/app/kibana"]
   ipv4: true
   ipv6: true
   mode: any
