@@ -41,8 +41,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: LoadBalancer
-  loadBalancerIP: "34.102.193.96"
+  type: NodePort
   httpPort: 80
   httpsPort: 443
   targetPort: http
@@ -50,27 +49,11 @@ service:
 ingress:
   enabled: false
   annotations:
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.global-static-ip-name: web-app-dev-ip
   hosts:
     - host: ""
       paths:
         - path: /
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: helloweb
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: helloweb-ip
-  labels:
-    app: hello
-spec:
-  defaultBackend:
-    service:
-      name: helloweb-backend
-      port:
-        number: 8080
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

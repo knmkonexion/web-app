@@ -6,7 +6,6 @@ metadata:
     k8s-apps: http-metrics
 spec:
   type: {{ .Values.service.type }}
-  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
   ports:
     - port: {{ .Values.service.httpPort }}
       name: http
