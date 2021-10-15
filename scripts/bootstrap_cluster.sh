@@ -20,7 +20,11 @@ install_prometheus() {
 
 install_argocd() {
   helm repo add argo https://argoproj.github.io/argo-helm
-  helm install argocd -n delivery argo/argo-cd
+  helm install argocd -n delivery -f ../helm-charts/argocd/override-values.yaml argo/argo-cd
+
+  argo_password=$(kubectl -n delivery get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+  echo 'admin'
+  echo "${argo_password}"
 }
 
 ### ArgoCD will manage these charts as part of Continuous Deployment
