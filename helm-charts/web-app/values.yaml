@@ -47,9 +47,9 @@ service:
   targetPort: http
 
 ingress:
-  enabled: false
+  enabled: true
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: web-app-dev-ip
+    kubernetes.io/ingress.global-static-ip-name: web-app
   hosts:
     - host: ""
       paths:
