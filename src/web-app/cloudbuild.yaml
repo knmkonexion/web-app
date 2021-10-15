@@ -7,6 +7,12 @@ steps:
     args: ["install", "-r", "requirements.txt", "--user"]
 
   - name: 'python:3.9.2'
+    id: lint-code
+    entrypoint: 'bash'
+    dir: 'src/web-app'
+    args: ['-c', 'find . -type f -name "*.py" | xargs pylint']
+
+  - name: 'python:3.9.2'
     id: unit-test-application
     entrypoint: 'bash'
     dir: 'src/web-app'
@@ -39,7 +45,7 @@ steps:
     args: ["-c", "docker push gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}"]
 
 substitutions:
-  _APP_VERSION: "0.1.13"
+  _APP_VERSION: "0.1.14"
 
 availableSecrets:
   secretManager:

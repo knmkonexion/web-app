@@ -1,14 +1,16 @@
-import os
+"""Test module"""
 import pytest
 import app
 
 @pytest.fixture
 def client():
+    """Conects the pytest client"""
     app.app.testing = True
     return app.app.test_client()
 
 def test_handler_no_env_variable(client):
-    r = client.get('/test')
+    """Tests the /test route on the main application"""
+    results = client.get('/test')
 
-    assert r.data.decode() == 'success'
-    assert r.status_code == 200
+    assert results.data.decode() == 'success'
+    assert results.status_code == 200

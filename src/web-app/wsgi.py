@@ -1,3 +1,4 @@
+"""Web gateway interface used in production workloads"""
 from app import app
 
 if __name__ == "__main__":
