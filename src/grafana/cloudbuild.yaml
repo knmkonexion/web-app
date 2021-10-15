@@ -26,7 +26,7 @@ steps:
     args: ["-c", "docker push gcr.io/${PROJECT_ID}/grafana:${_APP_VERSION}"]
 
 substitutions:
-  _APP_VERSION: "0.1.16"
+  _APP_VERSION: "0.1.17"
 
 availableSecrets:
   secretManager:

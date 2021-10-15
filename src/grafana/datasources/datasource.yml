@@ -19,7 +19,7 @@ datasources:
 - name: Prometheus
   type: prometheus
   orgId: 1
-  url: http://prometheus-stack-kube-prom-prometheus.default:9090/
+  url: http://prometheus-stack-kube-prom-prometheus.monitoring:9090/
   isDefault: false
   editable: true
   access: direct
