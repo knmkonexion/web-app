@@ -96,7 +96,7 @@ updateStrategy:
 service:
   type: LoadBalancer
   loadBalancerIP: ""
-  port: 5601
+  port: 80
   nodePort: ""
   labels: {}
   annotations: {}
