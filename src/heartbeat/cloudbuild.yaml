@@ -25,4 +25,4 @@ steps:
     args: ["-c", "docker push gcr.io/${PROJECT_ID}/heartbeat:${_APP_VERSION}"]
 
 substitutions:
-  _APP_VERSION: "0.1.15"
+  _APP_VERSION: "0.1.16"

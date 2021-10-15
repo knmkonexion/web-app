@@ -33,7 +33,7 @@
   id: grafana
   enabled: true
   schedule: '@every 5s'
-  urls: ["http://grafana.monitoring.svc.cluster.local:3000"]
+  urls: ["http://grafana.monitoring.svc.cluster.local:80"]
   ipv4: true
   ipv6: true
   username: grafana
