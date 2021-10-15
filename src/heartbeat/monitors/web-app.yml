@@ -2,7 +2,7 @@
   name: Hello World Web App (Dev)
   id: web-app-hello-world
   schedule: '@every 5s'
-  hosts: ["http://web-app-dev.default.svc.cluster.local:5000/health-check"]
+  hosts: ["http://web-app-dev.default.svc.cluster.local:80/health-check"]
   response.include_body_max_bytes: 99999
   response.include_body: on_error
   check.response:
