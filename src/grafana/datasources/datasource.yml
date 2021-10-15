@@ -22,5 +22,5 @@ datasources:
   url: http://prometheus-stack-kube-prom-prometheus.monitoring:9090/
   isDefault: false
   editable: true
-  access: direct
+  access: server
   
