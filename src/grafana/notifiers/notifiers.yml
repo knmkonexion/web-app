@@ -9,4 +9,4 @@ notifiers:
     disable_resolve_message: false
     settings:
       uploadImage: true
-      url: https://hooks.slack.com/services/${SLACK_KEY}
+      url: https://hooks.slack.com/services/"${SLACK_KEY}"

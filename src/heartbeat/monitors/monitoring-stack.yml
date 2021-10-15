@@ -3,13 +3,11 @@
   id: elasticsearch
   enabled: true
   schedule: '@every 5s'
-  urls: ["http://elasticsearch.default.svc.cluster.local:9200/_cluster/health"]
+  urls: ["http://elasticsearch.monitoring.svc.cluster.local:9200/_cluster/health"]
   ipv4: true
   ipv6: true
   mode: any
   timeout: 5s
-  username: '${ES_USERNAME:elastic}'
-  password: '${ES_PASSWORD:changeme}'
   check.request:
     method: "GET"
   check.response:
@@ -20,7 +18,7 @@
   id: kibana
   enabled: true
   schedule: '@every 5s'
-  urls: ["http://kibana.default.svc.cluster.local:5601/app/kibana"]
+  urls: ["http://kibana.monitoring.svc.cluster.local:5601/app/kibana"]
   ipv4: true
   ipv6: true
   mode: any
@@ -35,7 +33,7 @@
   id: grafana
   enabled: true
   schedule: '@every 5s'
-  urls: ["http://grafana.default.svc.cluster.local:3000"]
+  urls: ["http://grafana.monitoring.svc.cluster.local:3000"]
   ipv4: true
   ipv6: true
   username: grafana

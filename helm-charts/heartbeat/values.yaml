@@ -5,7 +5,7 @@ image:
   repository: gcr.io/cool-automata-328421/heartbeat
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.1.14"
+  tag: "0.1.15"
 
 imagePullSecrets: []
 nameOverride: ""
