@@ -740,7 +740,7 @@ grafana:
   ##
   service:
     portName: service
-    type: LoadBalancer
+    type: NodePort
 
   ## If true, create a serviceMonitor for grafana
   ##
