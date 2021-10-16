@@ -92,13 +92,18 @@ _Note: this project has been deployed to Google Cloud Platform thanks to their g
 - [x] Version app in pipeline
 - [x] CD to continually deploy the app
 - [x] Obtain a domain name
-- [ ] Obtain/apply SSL certificate
-- [ ] Put web app behind WAF -- Cloud Armor?
-- [ ] Add DNS configuration to Terraform (static IP/route/zone creation); it is part of IaC
+- [x] Obtain/apply SSL certificate
+- [x] Put web app behind WAF -- Cloud Armor **_automatically_** protects HTTP(S) Load Balancer workloads from volumetric and protocol based DDoS attacks
+- [ ] Set up HTTP redirect to HTTPS (GCLB isn't really good at this bit, yet...consider NGINX in the cluster)
+- [ ] Add DNS configuration to Terraform (static IP/route/zone creation)
+- [ ] Establish internal domain/DNS/VMs to allow remote connections to internal-only apps
+- [ ] Set up a real load balancer for k8s resources...but that means more overhead for us
+- [ ] Separate builds logically -- use git branching strategy to build in dev/stage/prod
 
 
 #### Deployment Strategy
 
+* Choices in this endeavor, and a key point: let Google manage as much low level infrastructure as possible...so I can develop features
 * Security and compliance - no apps get published to prod with vulnerabilities! Put gates in place.
 * Infrastructure - deploy based on estimated workload (infra/live), scale up and out as needed with Terragrunt configs
 * Canary deployments - cheaper, faster, more features get added without major pushes
