@@ -23,7 +23,7 @@ steps:
     id: version-application-and-build
     entrypoint: /bin/sh
     dir: 'helm-charts/heartbeat'
-    secretEnv: ['GITHUB_DEPLOY_KEY']
+    secretEnv: ['GITHUB_AUTOMATION_PASSWORD']
     args:
     - -c
     - |
