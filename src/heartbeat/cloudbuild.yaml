@@ -29,8 +29,7 @@ steps:
       git config --global user.email "automation.terracoders@mail.com" && \
       git config --global user.name "automation-terracoders" && \
       bumpversion --verbose patch && \
-      git branch && git status && \
-      git push
+      git push origin HEAD:main
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
