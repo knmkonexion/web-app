@@ -36,4 +36,8 @@ steps:
     id: publish-app-container
     entrypoint: /bin/bash
     dir: 'helm-charts/heartbeat'
-    args: ["-c", "docker push gcr.io/${PROJECT_ID}/heartbeat:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2)"]
+    args:
+    - -c
+    - |
+      docker tag gcr.io/${PROJECT_ID}/heartbeat:build gcr.io/${PROJECT_ID}/heartbeat:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2) && \
+      docker push gcr.io/${PROJECT_ID}/heartbeat:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2)
