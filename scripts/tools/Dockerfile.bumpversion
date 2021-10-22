@@ -1,6 +1,8 @@
 FROM python:3.9.2-alpine
 
 RUN apk add git --no-cache \
-    && pip --no-cache-dir install bump2version==1.0.1
+    && pip --no-cache-dir install bump2version==1.0.1 \
+    && git config --global user.email "automation.terracoders@mail.com" \
+    && git config --global user.name "automation-terracoders"
 
 CMD ["/bin/sh"]
