@@ -1,8 +1,20 @@
 - type: http
-  name: Hello World Web App (Dev)
-  id: web-app-hello-world
+  name: Hello World Web App (Dev. Backend)
+  id: web-app-hello-world-backend
   schedule: '@every 5s'
   hosts: ["http://web-app-dev.default.svc.cluster.local:80/health-check"]
+  response.include_body_max_bytes: 99999
+  response.include_body: on_error
+  check.response:
+    status: [200]
+    body:
+      - success
+
+- type: http
+  name: Hello World Web App (Dev, Frontend)
+  id: web-app-hello-world-frontend
+  schedule: '@every 5s'
+  hosts: ["https://www.terracoders.one/health-check"]
   response.include_body_max_bytes: 99999
   response.include_body: on_error
   check.response:

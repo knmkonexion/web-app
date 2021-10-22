@@ -4,7 +4,7 @@ steps:
     id: build-app-container-image
     entrypoint: /bin/bash
     dir: 'src/heartbeat'
-    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/heartbeat:${_APP_VERSION} .']
+    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/heartbeat:build .']
 
   - name: 'gcr.io/cloud-builders/docker'
     id: list-container-images
@@ -12,17 +12,22 @@ steps:
     dir: 'src/heartbeat'
     args: ['-c', 'docker images']
 
-### [SCAN CONTAINER] ###
+### [SCAN BUILT CONTAINER] ###
   - name: 'gcr.io/$PROJECT_ID/trivy'
     id: vulnerability-scan-image
-    args: ['gcr.io/${PROJECT_ID}/heartbeat:${_APP_VERSION}']
+    args: ['gcr.io/${PROJECT_ID}/heartbeat:build']
+
+### [VERSION CONTAINER] ###
+# To Do: create conditional logic for branching strategy, bump minor in dev, minor/major based on commit message (i.e. git commit -m 'MAJOR|MINOR')
+  - name: 'gcr.io/$PROJECT_ID/bumpversion'
+    id: version-application-and-build
+    entrypoint: /bin/sh
+    dir: 'helm-charts/heartbeat'
+    args: ['-c', 'bumpversion patch']
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: publish-app-container
     entrypoint: /bin/bash
     dir: 'src/heartbeat'
-    args: ["-c", "docker push gcr.io/${PROJECT_ID}/heartbeat:${_APP_VERSION}"]
-
-substitutions:
-  _APP_VERSION: "0.1.19"
+    args: ["-c", "docker push gcr.io/${PROJECT_ID}/heartbeat:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2)"]
