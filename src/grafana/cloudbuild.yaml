@@ -32,8 +32,9 @@ steps:
       git config --local user.email "automation.terracoders@mail.com" && \
       git config --local user.name "automation-terracoders" && \
       git fetch origin && \
-      git checkout develop && \
+      git checkout main && \
       bumpversion --verbose patch && \
+      git checkout develop && \
       git push https://'automation-terracoders':"$${GITHUB_AUTOMATION_PASSWORD}"@github.com/knmkonexion/web-app.git
 
 ### [PUBLISH APP] ###
