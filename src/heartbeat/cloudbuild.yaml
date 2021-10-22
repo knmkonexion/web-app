@@ -26,9 +26,9 @@ steps:
     args:
     - -c
     - |
-    git config --global user.email "automation.terracoders@mail.com" \
-    git config --global user.name "automation-terracoders" \
-    bumpversion patch
+      git config --global user.email "automation.terracoders@mail.com" \
+      git config --global user.name "automation-terracoders" \
+      bumpversion patch
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
