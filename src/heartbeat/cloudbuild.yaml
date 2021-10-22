@@ -30,6 +30,7 @@ steps:
       echo "$${GITHUB_DEPLOY_KEY}" >> ./id_rsa && \
       chmod 400 ./id_rsa && \
       git config --global core.sshCommand "ssh -i ./id_rsa -F /dev/null" && \
+      git config --local credential.helper "" && \
       git config --global user.email "automation.terracoders@mail.com" && \
       git config --global user.name "automation-terracoders" && \
       git config --list && \
