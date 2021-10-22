@@ -4,7 +4,7 @@ steps:
     id: build-app-container-image
     entrypoint: /bin/bash
     dir: 'src/grafana'
-    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/grafana:${_APP_VERSION} --build-arg SLACK_ALERT_CHANNEL=$${SLACK_ALERT_CHANNEL} .']
+    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/grafana:build --build-arg SLACK_ALERT_CHANNEL=$${SLACK_ALERT_CHANNEL} .']
     secretEnv: ['SLACK_ALERT_CHANNEL']
 
   - name: 'gcr.io/cloud-builders/docker'
@@ -16,19 +16,40 @@ steps:
 ### [SCAN CONTAINER] ###
   - name: 'gcr.io/$PROJECT_ID/trivy'
     id: vulnerability-scan-image
-    args: ['gcr.io/${PROJECT_ID}/grafana:${_APP_VERSION}']
+    args: ['gcr.io/${PROJECT_ID}/grafana:build']
+
+
+### [VERSION CONTAINER] ###
+# To Do: create conditional logic for branching strategy, bump minor in dev, minor/major based on commit message (i.e. git commit -m 'MAJOR|MINOR')
+  - name: 'gcr.io/$PROJECT_ID/bumpversion'
+    id: version-application-and-build
+    entrypoint: /bin/sh
+    dir: 'helm-charts/grafana'
+    secretEnv: ['GITHUB_AUTOMATION_PASSWORD']
+    args:
+    - -c
+    - |
+      git config --local user.email "automation.terracoders@mail.com" && \
+      git config --local user.name "automation-terracoders" && \
+      git fetch origin && \
+      git checkout develop && \
+      bumpversion --verbose patch && \
+      git push https://'automation-terracoders':"$${GITHUB_AUTOMATION_PASSWORD}"@github.com/knmkonexion/web-app.git
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: publish-app-container
     entrypoint: /bin/bash
-    dir: 'src/grafana'
-    args: ["-c", "docker push gcr.io/${PROJECT_ID}/grafana:${_APP_VERSION}"]
-
-substitutions:
-  _APP_VERSION: "0.1.18"
+    dir: 'helm-charts/grafana'
+    args:
+    - -c
+    - |
+      docker tag gcr.io/${PROJECT_ID}/grafana:build gcr.io/${PROJECT_ID}/grafana:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2) && \
+      docker push gcr.io/${PROJECT_ID}/grafana:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2)
 
 availableSecrets:
   secretManager:
   - versionName: projects/791112449288/secrets/SLACK_ALERT_CHANNEL/versions/1
     env: 'SLACK_ALERT_CHANNEL'
+  - versionName: projects/791112449288/secrets/GITHUB_AUTOMATION_PASSWORD/versions/2
+    env: 'GITHUB_AUTOMATION_PASSWORD'
