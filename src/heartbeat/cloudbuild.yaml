@@ -27,8 +27,8 @@ steps:
     args:
     - -c
     - |
-      echo "$${GITHUB_DEPLOY_KEY}" >> /root/.ssh/id_rsa && \
-      chmod 400 /root/.ssh/id_rsa && \
+      echo "$${GITHUB_DEPLOY_KEY}" >> ~/.ssh/id_rsa && \
+      chmod 400 ~/.ssh/id_rsa && \
       git config --global user.email "automation.terracoders@mail.com" && \
       git config --global user.name "automation-terracoders" && \
       bumpversion --verbose patch && \
