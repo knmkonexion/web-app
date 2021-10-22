@@ -27,11 +27,11 @@ steps:
     args:
     - -c
     - |
-      git config --local credential.helper "" && \
       git config --local user.email "automation.terracoders@mail.com" && \
       git config --local user.name "automation-terracoders" && \
+      git pull && \
+      git checkout -b develop && \
       bumpversion --verbose patch && \
-      git remote -v && \
       git push https://'automation-terracoders':"$${GITHUB_AUTOMATION_PASSWORD}"@github.com/knmkonexion/web-app.git
 
 ### [PUBLISH APP] ###
