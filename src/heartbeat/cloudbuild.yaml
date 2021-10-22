@@ -27,15 +27,11 @@ steps:
     args:
     - -c
     - |
-      echo "$${GITHUB_DEPLOY_KEY}" >> ./id_rsa && \
-      chmod 400 ./id_rsa && \
-      git config --global core.sshCommand "ssh -i ./id_rsa -F /dev/null" && \
       git config --local credential.helper "" && \
-      git config --global user.email "automation.terracoders@mail.com" && \
-      git config --global user.name "automation-terracoders" && \
-      git config --list && \
+      git config --local user.email "automation.terracoders@mail.com" && \
+      git config --local user.name "automation-terracoders" && \
       bumpversion --verbose patch && \
-      git push origin HEAD:main
+      git push https://'automation-terracoders':"$${GITHUB_AUTOMATION_PASSWORD}"@github.com/knmkonexion/web-app.git
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
@@ -50,5 +46,5 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/791112449288/secrets/GITHUB_AUTOMATION_KEY/versions/1
-    env: 'GITHUB_DEPLOY_KEY'
+  - versionName: projects/791112449288/secrets/GITHUB_AUTOMATION_PASSWORD/versions/1
+    env: 'GITHUB_AUTOMATION_PASSWORD'
