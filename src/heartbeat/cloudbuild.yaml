@@ -29,11 +29,11 @@ steps:
       ls -alh && \
       git config --global user.email "automation.terracoders@mail.com" && \
       git config --global user.name "automation-terracoders" && \
-      bumpversion patch
+      bumpversion --verbose patch
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: publish-app-container
     entrypoint: /bin/bash
-    dir: 'src/heartbeat'
+    dir: 'helm-charts/heartbeat'
     args: ["-c", "docker push gcr.io/${PROJECT_ID}/heartbeat:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2)"]
