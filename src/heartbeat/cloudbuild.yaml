@@ -23,7 +23,12 @@ steps:
     id: version-application-and-build
     entrypoint: /bin/sh
     dir: 'helm-charts/heartbeat'
-    args: ['-c', 'bumpversion patch']
+    args:
+    - -c
+    - |
+    git config --global user.email "automation.terracoders@mail.com" \
+    git config --global user.name "automation-terracoders" \
+    bumpversion patch
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
