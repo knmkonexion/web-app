@@ -13,9 +13,9 @@ set -e
 ##
 ##
 ## Arguments:
-##   -h, --help                Displays the help message.
-##   chaos <deployment_name>   Scales down a deployment to demonstrate a little bit of chaos (for monitoring and alerting demonstration) 
-##   calm <deployment_name>    Scales a deployment up to return to a nice, calm state
+##   -h, --help                          Displays the help message.
+##   chaos <deployment_name>             Scales down a deployment to demonstrate a little bit of chaos (for monitoring and alerting demonstration) 
+##   calm <deployment_name> <replicas>   Scales a deployment up by number of replicas, restoring things to a calm state
 ##
 
 usage() {
@@ -30,7 +30,7 @@ create_chaos() {
 }
 
 create_calm() {
-  kubectl scale --replicas=1 deployment/"$1"
+  kubectl scale --replicas="$2" deployment/"$1"
 }
 
 main() {
@@ -38,7 +38,7 @@ while [ "$#" -gt 0 ]; do
   case "$1" in
     (-h|--help) usage 2>&1;;
     (chaos) create_chaos "$2";;
-    (calm) create_calm "$2";;
+    (calm) create_calm "$2" "$3";;
     (*) "Invalid argument";;
   esac
   exit 0;
