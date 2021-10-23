@@ -94,12 +94,11 @@ _Note: this project has been deployed to Google Cloud Platform thanks to their g
 - [x] Obtain a domain name
 - [x] Obtain/apply SSL certificate
 - [x] Put web app behind WAF -- Cloud Armor **_automatically_** protects HTTP(S) Load Balancer workloads from volumetric and protocol based DDoS attacks
+- [x] Separate builds logically -- use git branching strategy to build in dev/stage/prod (quasi complete)
+- [x] Establish internal domain/DNS/VMs to allow remote connections to internal-only apps
+- [ ] Set up a real load balancer for k8s resources...but that means more overhead for us
 - [ ] Set up HTTP redirect to HTTPS (GCLB isn't really good at this bit, yet...consider NGINX in the cluster)
 - [ ] Add DNS configuration to Terraform (static IP/route/zone creation)
-- [ ] Establish internal domain/DNS/VMs to allow remote connections to internal-only apps
-- [ ] Set up a real load balancer for k8s resources...but that means more overhead for us
-- [ ] Separate builds logically -- use git branching strategy to build in dev/stage/prod
-
 
 #### Deployment Strategy
 
