@@ -23,7 +23,7 @@ steps:
     id: build-app-container-image
     entrypoint: /bin/bash
     dir: 'src/web-app'
-    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION} --build-arg DB_PASSWORD=$${WEB_APP_DB_PASSWORD} .']
+    args: ['-c', 'docker build -t gcr.io/${PROJECT_ID}/web-app:build --build-arg DB_PASSWORD=$${WEB_APP_DB_PASSWORD} .']
     secretEnv: ['WEB_APP_DB_PASSWORD']
 
   - name: 'gcr.io/cloud-builders/docker'
@@ -35,19 +35,39 @@ steps:
 ### [SCAN CONTAINER] ###
   - name: 'gcr.io/$PROJECT_ID/trivy'
     id: vulnerability-scan-image
-    args: ['gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}']
+    args: ['gcr.io/${PROJECT_ID}/web-app:build']
+
+### [VERSION CONTAINER] ###
+# To Do: create conditional logic for branching strategy, bump minor in dev, minor/major based on commit message (i.e. git commit -m 'MAJOR|MINOR')
+  - name: 'gcr.io/$PROJECT_ID/bumpversion'
+    id: version-application-and-build
+    entrypoint: /bin/sh
+    dir: 'helm-charts/web-app'
+    secretEnv: ['GITHUB_AUTOMATION_PASSWORD']
+    args:
+    - -c
+    - |
+      git config --local user.email "automation.terracoders@mail.com" && \
+      git config --local user.name "automation-terracoders" && \
+      git fetch origin && \
+      git checkout develop && \
+      bumpversion --verbose patch && \
+      git push https://'automation-terracoders':"$${GITHUB_AUTOMATION_PASSWORD}"@github.com/knmkonexion/web-app.git
 
 ### [PUBLISH APP] ###
   - name: 'gcr.io/cloud-builders/docker'
     id: publish-app-container
     entrypoint: /bin/bash
-    dir: 'src/web-app'
-    args: ["-c", "docker push gcr.io/${PROJECT_ID}/web-app:${_APP_VERSION}"]
-
-substitutions:
-  _APP_VERSION: "0.1.17"
+    dir: 'helm-charts/web-app'
+    args:
+    - -c
+    - |
+      docker tag gcr.io/${PROJECT_ID}/web-app:build gcr.io/${PROJECT_ID}/web-app:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2) && \
+      docker push gcr.io/${PROJECT_ID}/web-app:$(cat Chart.yaml | grep 'appVersion:' | cut -d' ' -f2)
 
 availableSecrets:
   secretManager:
   - versionName: projects/791112449288/secrets/WEB_APP_DB_PASSWORD/versions/1
     env: 'WEB_APP_DB_PASSWORD'
+  - versionName: projects/791112449288/secrets/GITHUB_AUTOMATION_PASSWORD/versions/2
+    env: 'GITHUB_AUTOMATION_PASSWORD'
