@@ -26,6 +26,7 @@ Purpose is to deploy a web application that stores/retrieves information from a 
 | MySQL DB | provisioned via Terragrunt/Terraform (IaC), hosts website content, includes sample data (blog posts) |
 | Kubernetes cluster | provisioned via Terragrunt/Terraform (IaC), hosts the web app and monitoring stack |
 | Containerized everything | web-app, supporting monitoring/metrics apps, pushed to private registry (GCR) for better security |
+| CI/CD pipelines | CI is achieved through Cloud Build, which is triggered by commits; meanwhile ArgoCD continuously deploys from the same commits from designated branches |
 | Container Registry (GCR) | only available inside my GCP project (security boundary), images are scanned for vulnerabilities |
 | Elasticsearch, Kibana, Grafana, Heartbeat | core monitoring stack, provisioned via Helm, provides availability, monitoring, and alerting |
 | Prometheus stack | provides metrics for cluster (nodes, pods, apps, services), provisioned via Helm (vendor Helm chart) |
@@ -95,11 +96,11 @@ _Note: this project has been deployed to Google Cloud Platform thanks to their g
 - [x] Obtain a domain name
 - [x] Obtain/apply SSL certificate
 - [x] Put web app behind WAF -- Cloud Armor **_automatically_** protects HTTP(S) Load Balancer workloads from volumetric and protocol based DDoS attacks
-- [x] Separate builds logically -- use git branching strategy to build in dev/stage/prod (quasi complete)
-- [x] Establish internal domain/DNS/VMs to allow remote connections to internal-only apps
-- [ ] Set up a real load balancer for k8s resources...but that means more overhead for us
-- [ ] Set up HTTP redirect to HTTPS (GCLB isn't really good at this bit, yet...consider NGINX in the cluster)
-- [ ] Add DNS configuration to Terraform (static IP/route/zone creation)
+- [x] Establish domain/DNS to allow remote connections to internal-only apps
+- [ ] Separate builds logically -- use git branching strategy (GitOps) to build in dev/stage/prod (quasi complete)
+- [ ] Set up a real load balancer for k8s resources...this means more overhead for us
+- [ ] Set up HTTP redirect to HTTPS (GCLB isn't really good at this yet...consider NGINX inside the cluster)
+- [ ] Add DNS configuration to Terraform (route/zone creation)
 
 #### Deployment Strategy
 
