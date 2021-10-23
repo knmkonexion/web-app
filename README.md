@@ -30,8 +30,9 @@ Purpose is to deploy a web application that stores/retrieves information from a 
 | Elasticsearch, Kibana, Grafana, Heartbeat | core monitoring stack, provisioned via Helm, provides availability, monitoring, and alerting |
 | Prometheus stack | provides metrics for cluster (nodes, pods, apps, services), provisioned via Helm (vendor Helm chart) |
 | ArgoCD | Continuous Deployment for designated apps, monitors Git for updates and applies them to Kubernetes resources, Helm charts in this case |
+| Google Analytics | Website analytics (page views, load times, user dwell time, monetization, etc.) |
 
-![Web App Architecture Diagram](docs/web-app-architecture_v3.png)
+![Web App Architecture Diagram](docs/web-app-architecture_v4.png)
 
 ## M2A2 _(Monitoring, Metrics, Availability, and Alerting)_
 
